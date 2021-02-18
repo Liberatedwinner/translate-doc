@@ -49,42 +49,41 @@ julia> Bar.foo()
 
 ## 전역 범위
 
-Each module introduces a new global scope, separate from the global scope of all other modules;
-there is no all-encompassing global scope. Modules can introduce variables of other modules into
-their scope through the [using or import](@ref modules) statements or through qualified access using the
-dot-notation, i.e. each module is a so-called *namespace*. Note that variable bindings can only
-be changed within their global scope and not from an outside module.
+각 모듈은 다른 모든 모듈의 전역 범위와 분리된 새로운 전역 범위를 도입한다. 모든 것을 포괄하는 전역 범위는 존재하지 않는다.
+모듈은 [using 또는 import](@ref modules) 문을 통해, 또는 dot-notation을 사용하는 qualified access를 통해 다른 모듈의 변수를 자신의 범위로 도입할 수 있다. 
+즉, 각 모듈은 소위 말하는 *namespace*이다 (i.e., each module is a so-called *namespace*).
+기억해둘 것은, 변수의 종속은 모듈의 전역 범위 내에서만 변경할 수 있고, 바깥의 모듈에서는 변경할 수 없다는 것이다.
 
 ```jldoctest
 julia> module A
-           a = 1 # a global in A's scope
+           a = 1 # A의 범위에서 전역
        end;
 
 julia> module B
            module C
                c = 2
            end
-           b = C.c    # can access the namespace of a nested global scope
-                      # through a qualified access
-           import ..A # makes module A available
+           b = C.c    # a qualified access를 통해서
+                      # 중첩된 전역 범위의 namespace에 접근 가능.
+           import ..A # 모듈 A를 사용가능하게 만듦.
            d = A.a
        end;
 
 julia> module D
-           b = a # errors as D's global scope is separate from A's
+           b = a # D의 전역 범위가 A의 것과는 분리되어있기에 error 발생.
        end;
 ERROR: UndefVarError: a not defined
 
 julia> module E
-           import ..A # make module A available
-           A.a = 2    # throws below error
+           import ..A # 모듈 A를 사용가능하게 만듦.
+           A.a = 2    # 이하의 error를 throw함.
        end;
 ERROR: cannot assign variables in other modules
 ```
 
-Note that the interactive prompt (aka REPL) is in the global scope of the module `Main`.
+기억해둘 것은, the interactive prompt (aka REPL)은 모듈 `main`의 전역 범위 안에 있다는 것이다.
 
-## Local Scope
+## 지역 범위
 
 A new local scope is introduced by most code blocks (see above
 [table](@ref man-scope-table) for a complete list).
