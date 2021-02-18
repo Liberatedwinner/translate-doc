@@ -1,16 +1,11 @@
 # [변수의 범위](@id scope-of-variables)
 
-변수의 *범위 (scope)* 는 그 안에서 변수가 보이는 (visible) 영역이다. 
+변수의 *범위 (또는 변수 영역; scope)* 는 그 안에서 변수가 보이는 (visible) 영역이다. 
 변수의 범위 설정은 변수의 이름이 서로 충돌하는 것을 막는데 도움이 된다.
 이 개념은 직관적이다: 두 함수 모두는 두 `x`가 같은 것을 참조하지 않아도 `x`라는 전달인자를 가질 수 있다. 
 마찬가지로, 코드의 다른 블록에서 같은 것을 참조하지 않아도 동일한 이름을 사용할 수 있는 수많은 경우가 있다.
 동일한 변수가 같은 것을 참조하거나 참조하지 않을 때의 규칙을 범위 규칙 (scope rule)이라고 하며, 이 절에서는 이를 세세히 살펴볼 것이다.
 
-Certain constructs in the language introduce *scope blocks*, which are regions of code that are
-eligible to be the scope of some set of variables. The scope of a variable cannot be an arbitrary
-set of source lines; instead, it will always line up with one of these blocks. There are two
-main types of scopes in Julia, *global scope* and *local scope*. The latter can be nested. The
-constructs introducing scope blocks are:
 언어의 특정 구조 (construct)는 *범위 블록* 을 도입하는데, 이는 변수의 몇몇 집합의 범위로 적합한, 코드의 영역들이다.
 변수의 범위는 소스 줄의 임의 집합이 될 수 없다. 그 대신에, 변수의 범위는 항상 이들 블록 중 한 곳에 해당한다. 
 Julia에는 *전역 범위 (global scope)* 와 *지역 범위 (local scope)* 의 두 주된 유형의 범위가 있다.
@@ -27,15 +22,10 @@ interactive prompt (REPL)                         | global | global
 functions (either syntax, anonymous & do-blocks) | local | global or local
 comprehensions, broadcast-fusing                 | local | global or local
 
-Notably missing from this table are
-[begin blocks](@ref man-compound-expressions) and [if blocks](@ref man-conditional-evaluation)
-which do *not* introduce new scopes.
-Both types of scopes follow somewhat different rules which will be explained below.
+주목할 것은, 이 표에서 [begin 블록](@ref man-compound-expressions)과 [if 블록](@ref man-conditional-evaluation)이 빠졌다는 것인데, 이 둘은 새로운 범위를 도입하지 *않았다*.
+두 범위의 type은 아래에 설명할 조금 다른 규칙을 따르고 있다.
 
-Julia uses [lexical scoping](https://en.wikipedia.org/wiki/Scope_%28computer_science%29#Lexical_scoping_vs._dynamic_scoping),
-meaning that a function's scope does not inherit from its caller's scope, but from the scope in
-which the function was defined. For example, in the following code the `x` inside `foo` refers
-to the `x` in the global scope of its module `Bar`:
+Julia는 정적 범위 ([lexical scoping](https://en.wikipedia.org/wiki/Scope_%28computer_science%29#Lexical_scoping_vs._dynamic_scoping))를 사용하는데, 이는 함수의 범위가 그 호출자 (caller) 의 범위에서 상속되는 것이 아니라 함수가 정의된 범위에서 상속됨을 의미한다. 예를 들어서, 다음의 코드에서 `foo` 내의 `x`는 모듈 `bar`의 전역 범위에 있는 `x`를 참조한다.
 
 ```jldoctest moduleBar
 julia> module Bar
@@ -44,7 +34,7 @@ julia> module Bar
        end;
 ```
 
-and not a `x` in the scope where `foo` is used:
+그리고 `foo`가 사용된 범위의 `x`를 참조하는 것이 아니다.
 
 ```jldoctest moduleBar
 julia> import .Bar
@@ -55,9 +45,9 @@ julia> Bar.foo()
 1
 ```
 
-Thus *lexical scope* means that the scope of variables can be inferred from the source code alone.
+그러므로 *정적 범위* 는 변수의 범위를 소스 코드만으로 유추할 수 있음을 의미한다.
 
-## Global Scope
+## 전역 범위
 
 Each module introduces a new global scope, separate from the global scope of all other modules;
 there is no all-encompassing global scope. Modules can introduce variables of other modules into
