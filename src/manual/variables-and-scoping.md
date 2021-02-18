@@ -1,26 +1,29 @@
-# [Scope of Variables](@id scope-of-variables)
+# [변수의 범위](@id scope-of-variables)
 
-The *scope* of a variable is the region of code within which a variable is visible. Variable scoping
-helps avoid variable naming conflicts. The concept is intuitive: two functions can both have arguments
-called `x` without the two `x`'s referring to the same thing. Similarly, there are many other cases
-where different blocks of code can use the same name without referring to the same thing. The
-rules for when the same variable name does or doesn't refer to the same thing are called scope
-rules; this section spells them out in detail.
+변수의 *범위 (scope)* 는 그 안에서 변수가 보이는 (visible) 영역이다. 
+변수의 범위 설정은 변수의 이름이 서로 충돌하는 것을 막는데 도움이 된다.
+이 개념은 직관적이다: 두 함수 모두는 두 `x`가 같은 것을 참조하지 않아도 `x`라는 전달인자를 가질 수 있다. 
+마찬가지로, 코드의 다른 블록에서 같은 것을 참조하지 않아도 동일한 이름을 사용할 수 있는 수많은 경우가 있다.
+동일한 변수가 같은 것을 참조하거나 참조하지 않을 때의 규칙을 범위 규칙 (scope rule)이라고 하며, 이 절에서는 이를 세세히 살펴볼 것이다.
 
 Certain constructs in the language introduce *scope blocks*, which are regions of code that are
 eligible to be the scope of some set of variables. The scope of a variable cannot be an arbitrary
 set of source lines; instead, it will always line up with one of these blocks. There are two
 main types of scopes in Julia, *global scope* and *local scope*. The latter can be nested. The
 constructs introducing scope blocks are:
+언어의 특정 구조 (construct)는 *범위 블록* 을 도입하는데, 이는 변수의 몇몇 집합의 범위로 적합한, 코드의 영역들이다.
+변수의 범위는 소스 줄의 임의 집합이 될 수 없다. 그 대신에, 변수의 범위는 항상 이들 블록 중 한 곳에 해당한다. 
+Julia에는 *전역 범위 (global scope)* 와 *지역 범위 (local scope)* 의 두 주된 유형의 범위가 있다.
+후자는 중첩이 가능하다. 범위 블록을 도입한 구조들은 다음과 같다.
 
-### [Scope constructs](@id man-scope-table)
+### [범위 구조](@id man-scope-table)
 
-Construct | Scope type | Scope blocks it may be nested in
+구조 (Construct) | 범위 type | 중첩가능한 범위 블록 (Scope blocks it may be nested in)
 ------------ | -------------  |---------------------------
 [`module`](@ref), [`baremodule`](@ref)            | global | global
 interactive prompt (REPL)                         | global | global
 (mutable) [`struct`](@ref), [`macro`](@ref)       | local  | global
-[`for`](@ref), [`while`](@ref), [`try-catch-finally`](@ref try), [`let`](@ref) |local | global or local
+[`for`](@ref), [`while`](@ref), [`try-catch-finally`](@ref try), [`let`](@ref) | local | global or local
 functions (either syntax, anonymous & do-blocks) | local | global or local
 comprehensions, broadcast-fusing                 | local | global or local
 
