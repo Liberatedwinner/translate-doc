@@ -18,7 +18,7 @@ Julia에는 *전역 범위 (global scope)* 와 *지역 범위 (local scope)* 의
 [`module`](@ref), [`baremodule`](@ref)            | 전역 | 전역
 interactive prompt (REPL)                         | 전역 | 전역
 (mutable) [`struct`](@ref), [`macro`](@ref)       | 지역  | 전역
-[`for`](@ref), [`while`](@ref), [`try-catch-finally`](@ref try), [`let`](@ref) | local | 전역 또는 지역
+[`for`](@ref), [`while`](@ref), [`try-catch-finally`](@ref try), [`let`](@ref) | 지역 | 전역 또는 지역
 functions (either syntax, anonymous & do-blocks) | 지역 | 전역 또는 전역
 comprehensions, broadcast-fusing                 | 지역 | 전역 또는 지역
 
