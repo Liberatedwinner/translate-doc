@@ -15,12 +15,12 @@ Julia에는 *전역 범위 (global scope)* 와 *지역 범위 (local scope)* 의
 
 구조 (Construct) | 범위 type | 중첩가능한 범위 블록 (Scope blocks it may be nested in)
 ------------ | -------------  |---------------------------
-[`module`](@ref), [`baremodule`](@ref)            | global | global
-interactive prompt (REPL)                         | global | global
-(mutable) [`struct`](@ref), [`macro`](@ref)       | local  | global
-[`for`](@ref), [`while`](@ref), [`try-catch-finally`](@ref try), [`let`](@ref) | local | global or local
-functions (either syntax, anonymous & do-blocks) | local | global or local
-comprehensions, broadcast-fusing                 | local | global or local
+[`module`](@ref), [`baremodule`](@ref)            | 전역 | 전역
+interactive prompt (REPL)                         | 전역 | 전역
+(mutable) [`struct`](@ref), [`macro`](@ref)       | 지역  | 전역
+[`for`](@ref), [`while`](@ref), [`try-catch-finally`](@ref try), [`let`](@ref) | local | 전역 또는 지역
+functions (either syntax, anonymous & do-blocks) | 지역 | 전역 또는 전역
+comprehensions, broadcast-fusing                 | 지역 | 전역 또는 지역
 
 주목할 것은, 이 표에서 [begin 블록](@ref man-compound-expressions)과 [if 블록](@ref man-conditional-evaluation)이 빠졌다는 것인데, 이 둘은 새로운 범위를 도입하지 *않았다*.
 두 범위의 type은 아래에 설명할 조금 다른 규칙을 따르고 있다.
@@ -106,11 +106,11 @@ julia> z
 ERROR: UndefVarError: z not defined
 ```
 
-!!! note
-    In this and all following examples it is assumed that their top-level is a global scope
-    with a clean workspace, for instance a newly started REPL.
+!!! 주목  
+    이 예제 및 이하의 모든 예제에서는 top-level이, 예를 들자면 새로 시작한 REPL처럼, 깨끗한 workspace가 있는 전역 범위라고 가정한다.
 
-Inner local scopes can, however, update variables in their parent scopes:
+
+내부의 지역 범위에서는 그들의 부모 범위 내의 변수 값을 update할 수 있다.
 
 ```jldoctest
 julia> for i = 1:1
@@ -189,7 +189,7 @@ julia> x
 
 An explicit `global` is needed to assign to a global variable:
 
-!!! sidebar "Avoiding globals"
+!!! sidebar "Avoiding globals"  
     Avoiding changing the value of global variables is considered by many
     to be a programming best-practice.
     Changing the value of a global variable can cause "action at a distance",
